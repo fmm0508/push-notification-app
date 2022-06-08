@@ -1,5 +1,4 @@
 import React, {useEffect} from "react";
-import sw from "../sw";
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
@@ -101,7 +100,7 @@ function App() {
     }
 
     if("serviceWorker" in navigator) {
-      navigator.serviceWorker.register(sw)
+      navigator.serviceWorker.register("./sw.js")
       .then(initialiseState);
     }else {
       console.warn("Service workers aren't supported in this browswer");
