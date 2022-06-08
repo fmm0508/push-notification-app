@@ -99,7 +99,7 @@ function App() {
     }
 
     if("serviceWorker" in navigator) {
-      navigator.serviceWorker.register('./sw.js')
+      navigator.serviceWorker.register('sw.js')
       .then(initialiseState);
     }else {
       console.warn("Service workers aren't supported in this browswer");
