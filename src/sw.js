@@ -1,16 +1,21 @@
-addEventListener('push', function(event) {
+document.body.addEventListener('push', function(event) {
+
   console.log('Received a push message', event);
 
-  var title = 'Yay a message.';
-  var body = 'We have received a push message.';
-  var icon = '/images/icon-192x192.png';
-  var tag = 'simple-push-demo-notification-tag';
-
-  event.waitUntil(
-  registration.showNotification(title, {
-      body: body,
-      icon: icon,
-      tag: tag
-  })
-  );
+  function showNotification() {
+    Notification.requestPermission(function(result) {
+      if (result === 'granted') {
+        navigator.serviceWorker.ready.then(function(registration) {
+          registration.showNotification('Vibration Sample', {
+            body: 'Buzz! Buzz!',
+            icon: '../images/touch/chrome-touch-icon-192x192.png',
+            vibrate: [200, 100, 200, 100, 200, 100, 200],
+            tag: 'vibration-sample'
+          });
+        });
+      }
+    });
+  }
 });
+
+export default showNotification;
