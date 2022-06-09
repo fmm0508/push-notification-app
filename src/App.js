@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {Button, Row, Col, Toast} from 'react-bootstrap';
+import {Button, Toast} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { requestForToken, onMessageListener } from "./firebase";
@@ -15,7 +15,7 @@ function App() {
   onMessageListener().then(payload => {
     setShow(true);
     setNotification({title: payload.notification.title, body: payload.notification.body})
-    console.log(payload);
+    console.log(payload, notification);
   }).catch(err => console.log('failed: ', err));
 
   return (
