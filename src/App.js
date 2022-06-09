@@ -1,118 +1,44 @@
-import React, {useEffect} from "react";
-import sw from "./sw";
+import {useState} from 'react';
+import {Button, Row, Col, Toast} from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyBJV4J1F68K20_Ulw3MkLr1VGMuilq9tik",
-  authDomain: "esystemspush.firebaseapp.com",
-  projectId: "esystemspush",
-  storageBucket: "esystemspush.appspot.com",
-  messagingSenderId: "319177733947",
-  appId: "1:319177733947:web:a25577f3bc46529935291e"
-};
-
-// Initialize Firebase
-initializeApp(firebaseConfig);
-
+import { requestForToken, onMessageListener } from "./firebase";
 
 function App() {
-  let isPushEnabled = false;
 
-  useEffect(function() {
-    onClickHandle();
-  });
+  const [show, setShow] = useState(false);
+  const [notification, setNotification] = useState({title: '', body: ''});
+  const [isTokenFound, setTokenFound] = useState(false);
 
-  function subscribe() {
-    var pushButton = document.querySelector(".js-push-button");
-    pushButton.disabled = true;
+  requestForToken(setTokenFound);
 
-    navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
-      serviceWorkerRegistration.pushManager.subscribe()
-        .then(function(subscription) {
-          isPushEnabled = true;
-          pushButton.textContent = "Disable Push Messages";
-          pushButton.disabled = false;
-          // TODO: Send the subscription.endpoint to your server
-          // and save it to send a push message at a later date
-          console.log(subscription);
-          //return sendSubscriptionToServer(subscription);
-        })
-        .catch(function(e) {
-          if(Notification.permission === "denied") {
-            console.warn("Permission for Notifications was denied");
-            pushButton.disabled = true;
-          } else {
-            console.error("Unable to subscribe to push.", e);
-            pushButton.disabled = false;
-            pushButton.textContent = "Enable Push Messages";
-          }
-        });
-    });
-  }
-
-  function initialiseState() {
-    if(!("showNotification" in ServiceWorkerRegistration.prototype)) {
-      console.warn("Notifications aren't supported.");
-      return;
-    }
-
-    if(Notification.permission === "denied") {
-      console.warn("The user has blocked notifications.");
-      return;
-    }
-
-    if(!("PushManager" in window)) {
-      console.warn("Push messaging isn't supported");
-      return;
-    }
-
-    navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
-      serviceWorkerRegistration.pushManager.getSubscription()
-        .then(function(subscription) {
-          var pushButton = document.querySelector(".js-push-button");
-          pushButton.disabled = false;
-
-          if(!subscription) {
-            return;
-          }
-          console.log(subscription);
-          //sendSubscriptionToServer(subscription);
-
-          pushButton.textContent = "Disable Push Messages";
-          isPushEnabled = true;
-        })
-        .catch(function(err) {
-          console.warn("Error during getSubscription()", err);
-        });
-    })
-  }
-
-  function onClickHandle() {
-
-    if(isPushEnabled) {
-      //unsubscribe
-    } else {
-      subscribe();
-    }
-
-    if("serviceWorker" in navigator) {
-      navigator.serviceWorker.register(sw)
-      .then(initialiseState);
-    }else {
-      console.warn("Service workers aren't supported in this browswer");
-    }
-  }
+  onMessageListener().then(payload => {
+    setShow(true);
+    setNotification({title: payload.notification.title, body: payload.notification.body})
+    console.log(payload);
+  }).catch(err => console.log('failed: ', err));
 
   return (
-    <div>
-      <button className="js-push-button" onClick={onClickHandle} disabled>Enable Push Messages</button>
+    <div className="App">
+      <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide animation style={{
+        position: 'absolute',
+        top: 20,
+        right: 20 }}>
+        <Toast.Header>
+          <img src="holder.js/20x20?text=%20" className="rounded mr-2" alt=""/>
+          <strong className="mr-auto">Notification</strong>
+          <small>12 mins ago</small>
+        </Toast.Header>
+        <Toast.Body>There are some new updates that you might love!</Toast.Body>
+      </Toast>
+      <header className="App-header">
+        {isTokenFound && <h1> Notification permission enabled</h1>}
+        {!isTokenFound && <h1> Need notification permission</h1>}
+        {/* <img src={logo} className="App-logo" alt="logo" /> */}
+        <Button onClick={() => setShow(true)}>Show Toast</Button>
+      </header>
     </div>
-  );
+    );
 }
 
 export default App;
