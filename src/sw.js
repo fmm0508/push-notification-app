@@ -7,7 +7,7 @@ addEventListener('push', function(event) {
   var tag = 'simple-push-demo-notification-tag';
 
   event.waitUntil(
-  self.registration.showNotification(title, {
+  registration.showNotification(title, {
       body: body,
       icon: icon,
       tag: tag
