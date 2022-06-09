@@ -17,5 +17,3 @@ document.body.addEventListener('push', function(event) {
     });
   }
 });
-
-export default showNotification;
