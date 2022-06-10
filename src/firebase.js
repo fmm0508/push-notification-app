@@ -19,7 +19,7 @@ initializeApp(firebaseConfig);
 const messaging = getMessaging();
 
 export const requestForToken = () => {
-  const PUBLIC_VAPID_KEY = "BBbUptCfg4w8no40XCrcZjCSSNtKCmZZ2fAzigttlCABEjHgMO6ieq28yHpu3gIfy-3Mp8mrn1ANQfdm5-L09Hg";
+  const PUBLIC_VAPID_KEY = "BIN7824_2O1hbM5PvuGEVJTf5Y09miXHEnvnQix1HDAND8dDkCoT3hGFPXkz6LkOFwHzaoFGrcVVQ_z2LMhqxps";
   return getToken(messaging, {vapidKey: PUBLIC_VAPID_KEY})
   .then((currentToken) => {
     if (currentToken) {

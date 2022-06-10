@@ -1,7 +1,5 @@
-// eslint-disable-next-line no-undef
-importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js');
-// eslint-disable-next-line no-undef
-importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging-compat.js');
+import { initializeApp } from "firebase/app";
+import { getMessaging } from "firebase/messaging";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDqYwENWxgEw2FwoUy4wDiAadNLEJiZt1o",
@@ -15,11 +13,11 @@ const firebaseConfig = {
 
 // Initialize Firebase
 // eslint-disable-next-line no-undef
-firebase.initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
 // Retrieve firebase messaging
 // eslint-disable-next-line no-undef
-const messaging = firebase.messaging();
+const messaging = getMessaging(app);
 
 messaging.onBackgroundMessage(function(payload) {
   console.log('Received background message ', payload);
