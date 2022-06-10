@@ -5,12 +5,13 @@ import { getMessaging, getToken, onMessage } from "firebase/messaging";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBJV4J1F68K20_Ulw3MkLr1VGMuilq9tik",
-  authDomain: "esystemspush.firebaseapp.com",
-  projectId: "esystemspush",
-  storageBucket: "esystemspush.appspot.com",
-  messagingSenderId: "319177733947",
-  appId: "1:319177733947:web:a25577f3bc46529935291e"
+  apiKey: "AIzaSyDqYwENWxgEw2FwoUy4wDiAadNLEJiZt1o",
+  authDomain: "my-app-48628.firebaseapp.com",
+  projectId: "my-app-48628",
+  storageBucket: "my-app-48628.appspot.com",
+  messagingSenderId: "813348264268",
+  appId: "1:813348264268:web:f1425e8b5a166546fb17e9",
+  measurementId: "G-QE57ELW81K"
 };
 
 // Initialize Firebase
@@ -18,7 +19,7 @@ initializeApp(firebaseConfig);
 const messaging = getMessaging();
 
 export const requestForToken = () => {
-  const PUBLIC_VAPID_KEY = "BNsdHucrl0rvLF-Fg_ZtTnBl6ufx8Y0wB8moMK9VkuyXHJVaFm6Z3Bhc9v8Au1iPdpfzf0FIZs0Z0JoOovPbNJY";
+  const PUBLIC_VAPID_KEY = "BBbUptCfg4w8no40XCrcZjCSSNtKCmZZ2fAzigttlCABEjHgMO6ieq28yHpu3gIfy-3Mp8mrn1ANQfdm5-L09Hg";
   return getToken(messaging, {vapidKey: PUBLIC_VAPID_KEY})
   .then((currentToken) => {
     if (currentToken) {
